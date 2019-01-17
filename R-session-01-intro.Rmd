@@ -89,7 +89,7 @@ knitr::include_graphics("img/NTU-Logo-full-colour.png")
 ]
 
 .pull-right[
-```{r, out.width="50%", echo=FALSE, fig.align="right"}
+```{r, out.width="50%", echo=FALSE, fig.align="center"}
 knitr::include_graphics("img/logo_SBR.png")
 ```
 ]
@@ -894,8 +894,7 @@ Can you read the help and suggest a change in the way we call the function ?
 
 .warning[If you write 3 times the same piece of code write a function...]
 
-???
-End of lecture one
+> End of lecture one
 ---
 ## Examples of functions
 
