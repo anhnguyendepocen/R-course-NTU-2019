@@ -1,5 +1,5 @@
 ---
-title: "Fundamental of Data Science for ESS"
+title: "Fundamental of Data Science for EESS"
 subtitle: "R session 01 - Introduction to R"
 author: "Daniel Vaulot"
 date: "2019/01/17 (updated: `r Sys.Date()`)"
@@ -58,7 +58,8 @@ options(htmltools.dir.version = FALSE)
 
 ```{r, echo=FALSE}
 # All presentations done with Xaringan
-# See Wiki - https://github.com/yihui/xaringan/wiki
+# Wiki : https://github.com/yihui/xaringan/wiki
+# More tricks : https://arm.rbind.io/slides/xaringan.html#1
 
 # css: [default, metropolis, metropolis-fonts, "metropolis-dv.css"]
 

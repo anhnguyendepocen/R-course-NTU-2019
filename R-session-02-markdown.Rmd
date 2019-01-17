@@ -1,5 +1,5 @@
 ---
-title: "Fundamental of Data Science for ESS"
+title: "Fundamental of Data Science for EESS"
 subtitle: "R session 02 - R markdown"
 author: "Daniel Vaulot"
 date: "2019/01/24 (updated: `r Sys.Date()`)"
@@ -69,7 +69,7 @@ options(htmltools.dir.version = FALSE)
 
 
 ```
-# Fundamental of Data Science for ESS
+# Fundamental of Data Science for EESS
 
 
 ```{r, out.width="40%", echo=FALSE, fig.align="center"}
