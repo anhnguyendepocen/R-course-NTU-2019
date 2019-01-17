@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fundamental of Data Science for ESS</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Daniel Vaulot" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="metropolis-dv.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+# Fundamental of Data Science for ESS
+
+
+&lt;img src="img/course-logo.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+## R session 02 - R markdown
+
+**Daniel Vaulot**
+
+Station Biologique de Roscoff, CNRS-Sorbonne Université
+
+Nanyang Technological University
+
+2019/01/24
+
+---
+layout: true
+
+# Outline
+
+---
+
+
+.font150[
+* What is R and why use R ?
+* Resources
+* Get started
+* What can you do with R markdown ?
+]
+---
+layout: true
+
+# Introduction
+
+---
+
+
+---
+layout: true
+
+# What can you do with Rmarkdown ?
+
+---
+## Curriculum vitae
+
+.left-column[
+&lt;img src="img/package-vitae-logo.png" width="45%" /&gt;
+
+]
+
+.right-column[
+
+https://cloud.r-project.org/web/packages/vitae/index.html
+ 
+&lt;img src="img/package-vitae-example-02.png" width="90%" /&gt;
+]
+
+---
+## Posters
+
+.left-column[
+&lt;img src="img/package-posterdown-logo.png" width="45%" /&gt;
+
+]
+
+.right-column[
+
+https://github.com/brentthorne/posterdown
+ 
+&lt;img src="img/package-posterdown-example.png" width="80%" /&gt;
+]
+    </textarea>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "tomorrow-night-blue",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
