@@ -2,7 +2,8 @@
 
 These lectures are part of the course:
 
-## Fundamentals of Data Science for ESS by David Lallemant
+## Fundamentals of Data Science for Earth and Environmental Systems Science
+### Supervised by David Lallemant
 
 Asian School of the Environment  
 Nanyang Technological University
