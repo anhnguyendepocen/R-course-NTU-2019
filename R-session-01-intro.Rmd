@@ -62,6 +62,7 @@ options(htmltools.dir.version = FALSE)
 # More tricks : https://arm.rbind.io/slides/xaringan.html#1
 
 # css: [default, metropolis, metropolis-fonts, "metropolis-dv.css"]
+# Themes : https://pkg.garrickadenbuie.com/xaringanthemer/articles/template-variables.html
 
 # Styles for code highlighting : https://github.com/gnab/remark/wiki/Configuration
 
@@ -70,7 +71,7 @@ options(htmltools.dir.version = FALSE)
 
 
 ```
-# Fundamental of Data Science for ESS
+# Fundamental of Data Science for EESS
 
 
 ```{r, out.width="40%", echo=FALSE, fig.align="center"}
