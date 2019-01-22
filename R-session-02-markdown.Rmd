@@ -29,7 +29,6 @@ output:
 
 ```{r setup, include=FALSE}
 library("knitr")
-library("kableExtra")
 
 options(htmltools.dir.version = FALSE)
   knitr::opts_chunk$set(fig.width=6, 
@@ -44,16 +43,6 @@ options(htmltools.dir.version = FALSE)
                         warning=TRUE,
                         highlight=TRUE,
                         fig.show='hold')
-```
-
-```{r, echo=FALSE}
-# Define a function for formatting the dataframes
-
- my_kable <- function(df){
-   options(knitr.kable.NA = '') 
-   knitr::kable(df,"latex",row.names =FALSE, booktabs=T, linesep = "") %>%
-      kableExtra::kable_styling(latex_options = c("scale_down", "striped"))
-   }
 ```
 
 # Fundamental of Data Science for EESS
@@ -106,11 +95,14 @@ class: middle
     
 
 ## Resources
-On-line Book: https://bookdown.org/yihui/rmarkdown]
+* On-line Book: https://bookdown.org/yihui/rmarkdown
+
+* Cheat sheet: https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf
+]
 
 .pull-right[
 
-```{r echo=FALSE, fig.align="center", fig.cap="", out.width='50%'}
+```{r echo=FALSE, fig.align="center", fig.cap="", out.width='65%'}
 knitr::include_graphics('img/R-markdown-book.png')
 ```
 ]
@@ -363,6 +355,10 @@ knitr::include_graphics('img/package-rmarkdown-new-02.png')
 
 ---
 
+![](img/R-markdown_new.gif)
+
+---
+
 ## Knit to HTML
 
 ```{r echo=FALSE, out.width='80%'}
@@ -446,8 +442,33 @@ knitr::include_graphics('img/package-rmarkdown-chunk-options.png')
 
 ---
 
+## Add a code to chunk
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/package-rmarkdown-chunk-write.png')
+```
+
+---
+
+## Run chunk inside Rmd file
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/package-rmarkdown-chunk-run.png')
+```
+
+---
+
+## Knit chunk to HTML
+
+```{r echo=FALSE, out.width='50%'}
+knitr::include_graphics('img/package-rmarkdown-chunk-run-knit.png')
+```
+
+---
+
 ## Useful options
 
+<br>
 
 Options | Default value | Aim
 --- | --- | ---
@@ -559,6 +580,39 @@ knitr::include_graphics("img/web-site-dv.png")
 ```
 ]
 
+---
+layout: false
+
+# Next time: Data manipulation (tidyr)
+
+.pull-left[
+What you will learn :
+
+* Read data from files (text, Excel)
+* Manipulate data
+  - create new columns
+  - filter
+  - summarize (statistics)
+]
+
+.pull-right[
+
+```{r echo=FALSE, fig.align="center", fig.cap="", out.width='40%'}
+knitr::include_graphics('img/R_for_datascience.png')
+```
+]
+
+.student[
+* Please install the following packages and their dependencies
+    * readr
+    * readxl
+    * dplyr
+    * tidyr
+    * stringr
+* Download data files (links on slack)
+
+* Chapter 5 of R for data science: https://r4ds.had.co.nz/
+]
 
 
 
