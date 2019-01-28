@@ -896,7 +896,7 @@ Can you read the help and suggest a change in the way we call the function ?
 
 .warning[If you write 3 times the same piece of code write a function...]
 
-> End of lecture one
+**End of lecture one**
 ---
 ## Examples of functions
 
@@ -914,8 +914,8 @@ Most of the time you do not have to write functions because someone has already 
 * Normal distribution
 
 ```{r}
- y <- rnorm(100, mean = 0, sd = 1)
- y[1:10]
+ y <- rnorm(10, mean = 0, sd = 1)
+ y
 ```
 
 ---
@@ -928,13 +928,8 @@ Most of the time you do not have to write functions because someone has already 
  mean(y)
  sd(y)
 ```
---
-.student[
-* Is the mean close to expected mean ?
-* What can be done ?
-]
 
----
+--
 
 Sample more points... 10,000 instead of 100
 
@@ -1149,7 +1144,7 @@ colnames(df) # columns names
 --
 
 ```{r}
-   df[df$label ==  3,]
+   df[df$label ==  "c",]
 ```
 
 ---

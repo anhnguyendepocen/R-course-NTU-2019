@@ -108,12 +108,10 @@ knitr::include_graphics('img/R-markdown-book.png')
 ]
 
 ---
-layout: true
+layout: false
 background: url(img/logo-markdown.png)
 
 # What is markdown ?
-
----
 
 .center[
 ```{r echo=FALSE, fig.cap="", out.width='20%'}
@@ -134,6 +132,76 @@ knitr::include_graphics('img/markdown-Aaron_Swartz.jpg')
 * GitHub Flavored Markdown (GFM)
 * Pandoc
 * CommonMark
+
+---
+
+# Rmarkdown
+
+```{r echo=FALSE, out.width='70%'}
+knitr::include_graphics('img/package-rmarkdown-flow.png')
+```
+
+## Mix
+
+* Markdown
+    - paragraph structure
+    - comments
+    - links
+
+* R code ("chunks")
+
+* Output of R code
+
+---
+
+layout: true
+
+# Your first Rmarkdown file
+
+---
+.student[Who has not been able to install Rmarkdown and Latex ?]
+
+--
+
+```{r echo=FALSE, out.width=c('40%','40%')}
+knitr::include_graphics('img/package-rmarkdown-new-01.png')
+knitr::include_graphics('img/package-rmarkdown-new-02.png')
+```
+
+---
+
+![](img/R-markdown_new.gif)
+
+---
+
+## Knit to HTML
+
+```{r echo=FALSE, out.width='80%'}
+knitr::include_graphics('img/package-rmarkdown-knit.png')
+```
+
+.warning[Save to "xxx.Rmd"]
+
+---
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/package-rmarkdown-HTML.png')
+```
+
+---
+
+## Knit of pdf
+
+```{r echo=FALSE, out.width='40%'}
+knitr::include_graphics('img/package-rmarkdown-knit-pdf.png')
+```
+
+---
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('img/package-rmarkdown-pdf-output.png')
+```
+
+
 
 ---
 layout: true
@@ -277,13 +345,27 @@ ID | First | Last
 --- | --- | ---
 1 | Donald | Trump
 
+
+
 ---
+
 layout: false
 
-# Conversion
+# Rmarkdown conversion
+
+```{r echo=FALSE, fig.align="center", fig.cap="", out.width='70%'}
+knitr::include_graphics('img/R-markdown-flow.png')
+```
+
+--
+
+
+.pull-left[
+* [knitr](https://yihui.name/knitr/) : R library
 
 * [Pandoc](https://pandoc.org/) : command line tool
-* Converts from **md** to **pdf**, **html**, **docx**...
+
+    * Converts from **md** to **pdf**, **html**, **docx**...
 
 ```{r, eval = FALSE}
 # HTML
@@ -292,101 +374,19 @@ layout: false
 # pdf
 > pandoc test1.md -s -o test1.pdf
 ```
+]
+
+.pull-right[
 
 
-```{r echo=FALSE, fig.align="left", fig.cap="", out.width='70%'}
-knitr::include_graphics('img/pandoc.png')
-```
-
----
-
-layout: true
-
-# Rmarkdown
-
----
-
-```{r echo=FALSE, out.width='70%'}
-knitr::include_graphics('img/package-rmarkdown-flow.png')
-```
-
-## Mix
-
-* Markdown
-    - paragraph structure
-    - comments
-    - links
-
-* R code ("chunks")
-
-* Output of R code
-
----
-
-## Flow
-
-```{r echo=FALSE, fig.align="center", fig.cap="", out.width='70%'}
-knitr::include_graphics('img/R-markdown-flow.png')
-```
-
---
-
-```{r echo=FALSE, fig.align="left", fig.cap="", out.width='10%'}
+```{r echo=FALSE, fig.align="center", fig.cap="", out.width='30%'}
 knitr::include_graphics('img/package-knitr-logo.png')
 ```
-* [knitr](https://yihui.name/knitr/)  
 
-
----
-
-layout: true
-
-# Your first Rmarkdown file
-
----
-.student[Who has not been able to install Rmarkdown and Latex ?]
-
---
-
-```{r echo=FALSE, out.width=c('40%','40%')}
-knitr::include_graphics('img/package-rmarkdown-new-01.png')
-knitr::include_graphics('img/package-rmarkdown-new-02.png')
+```{r echo=FALSE, fig.align="left", fig.cap="", out.width='100%'}
+knitr::include_graphics('img/pandoc.png')
 ```
-
----
-
-![](img/R-markdown_new.gif)
-
----
-
-## Knit to HTML
-
-```{r echo=FALSE, out.width='80%'}
-knitr::include_graphics('img/package-rmarkdown-knit.png')
-```
-
-.warning[Save to "xxx.Rmd"]
-
----
-
-```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('img/package-rmarkdown-HTML.png')
-```
-
----
-
-## Knit of pdf
-
-```{r echo=FALSE, out.width='40%'}
-knitr::include_graphics('img/package-rmarkdown-knit-pdf.png')
-```
-
----
-```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('img/package-rmarkdown-pdf-output.png')
-```
-
-
+]
 ---
 
 layout: true
@@ -442,7 +442,9 @@ knitr::include_graphics('img/package-rmarkdown-chunk-options.png')
 
 ---
 
-## Add a code to chunk
+## Run chunk
+
+* Two options
 
 ```{r echo=FALSE, out.width='100%'}
 knitr::include_graphics('img/package-rmarkdown-chunk-write.png')

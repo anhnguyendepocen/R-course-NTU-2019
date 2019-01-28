@@ -919,7 +919,7 @@ my_sum(10, 20)
 
 .warning[If you write 3 times the same piece of code write a function...]
 
-&gt; End of lecture one
+**End of lecture one**
 ---
 ## Examples of functions
 
@@ -943,8 +943,8 @@ sum(x)
 
 
 ```r
-y &lt;- rnorm(100, mean = 0, sd = 1)
-y[1:10]
+y &lt;- rnorm(10, mean = 0, sd = 1)
+y
 ```
 
 ```
@@ -974,13 +974,8 @@ sd(y)
 ```
 [1] 0.8875528
 ```
---
-.student[
-* Is the mean close to expected mean ?
-* What can be done ?
-]
 
----
+--
 
 Sample more points... 10,000 instead of 100
 
@@ -1303,12 +1298,12 @@ df[df$id &lt;= 3, ]
 
 
 ```r
-df[df$label == 3, ]
+df[df$label == "c", ]
 ```
 
 ```
-[1] label id    value flag 
-&lt;0 lignes&gt; (ou 'row.names' de longueur nulle)
+  label id    value flag
+3     c  3 1.018853 TRUE
 ```
 
 ---
