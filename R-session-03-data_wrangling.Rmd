@@ -26,7 +26,7 @@ output:
     includes:
       in_header: header.tex
 ---
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, purl=FALSE}
 library("knitr")
 
 options(htmltools.dir.version = FALSE)
@@ -44,7 +44,7 @@ options(htmltools.dir.version = FALSE)
                         fig.show='hold')
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
 # Define a function for formatting the dataframes
 
  my_kable <- function(df, nrows = 10){
@@ -58,7 +58,7 @@ options(htmltools.dir.version = FALSE)
 # Fundamental of Data Science for EESS
 
 
-```{r, out.width="40%", echo=FALSE, fig.align="center"}
+```{r, out.width="40%", echo=FALSE, purl=FALSE, fig.align="center"}
 knitr::include_graphics("img/course-logo.png")
 ```
 
@@ -69,13 +69,13 @@ knitr::include_graphics("img/course-logo.png")
 2019-01-31
 
 .pull-left[
-```{r, out.width="50%", echo=FALSE, fig.align="left"}
+```{r, out.width="50%", echo=FALSE, purl=FALSE, fig.align="left"}
 knitr::include_graphics("img/NTU-Logo-full-colour.png")
 ```
 ]
 
 .pull-right[
-```{r, out.width="50%", echo=FALSE, fig.align="right"}
+```{r, out.width="50%", echo=FALSE, purl=FALSE, fig.align="right"}
 knitr::include_graphics("img/logo_SBR.png")
 ```
 ]
@@ -94,6 +94,7 @@ class: middle
     * Columns
     * Rows
     * Joining tables
+    * Going from wide to long format
 ]
 
 ---
@@ -103,28 +104,31 @@ class: middle
 .pull-left[
 ## Packages
 
+.font70[
 * readxl  : Reading Excel files
 * readr   : Reading and writing Text files
-
 * dplyr : Filter and reformat data frames
 * tidyr : Make data "tidy"
-
 * stringr :  Manipulating strings
 * lubridate : Manipulate date
-    
+* unzip `R-session-03.zip`
+* Open in R `R-session-03-data_wrangling.R`
+]
 
 ## Resources
-* On-line Book: https://r4ds.had.co.nz/ (Chapter 5)
+.font70[
+* [R for data science](https://r4ds.had.co.nz/): (Chapter 5)
 
 * Cheat sheets
-    * Importing data : https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf
-    * Cleaning up data : https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf
-    * Manipulating strings : https://github.com/rstudio/cheatsheets/raw/master/strings.pdf
+    * [Importing data](https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf)
+    * [Cleaning up data](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf)
+    * [Manipulating strings](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf)
+]
 ]
 
 .pull-right[
 
-```{r echo=FALSE, fig.align="center", fig.cap="", out.width='65%'}
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='65%'}
 knitr::include_graphics('img/R_for_datascience.png')
 ```
 ]
@@ -139,7 +143,7 @@ knitr::include_graphics('img/R_for_datascience.png')
 2. Each observation must have its own row.
 2. Each value must have its own cell.
 
-```{r, echo=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
 knitr::include_graphics("img/tidy-data.png")
 ```
 
@@ -174,10 +178,9 @@ layout: true
 ## CARBOM cruise off Brazil
 
 .pull-left[
-```{r, echo=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
 knitr::include_graphics("img/carbom_cruise.png")
 ```
-
 
 ]
 
@@ -191,16 +194,18 @@ knitr::include_graphics("img/carbom_cruise.png")
 * Temperature, Salinity
 * Nitrates, Phosphates
 
-```{r, echo=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
 knitr::include_graphics("img/carbom_isme.png")
 ```
+
 ]
+
 ---
 
 ## Microbial populations
 
 .pull-left[
-```{r, echo=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
 knitr::include_graphics("img/picopk-domi.png")
 ```
 ]
@@ -208,7 +213,7 @@ knitr::include_graphics("img/picopk-domi.png")
 --
 
 .pull-right[
-```{r, echo=FALSE, fig.cap="", out.width = '80%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '80%', fig.align= "center"}
 knitr::include_graphics("img/carbom_flow_cytometry.png")
 ```
 ]
@@ -226,7 +231,7 @@ layout: true
 
 ## Text file - TAB delimited
 
-```{r, echo=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
 knitr::include_graphics("img/carbom_txt.png")
 ```
 
@@ -240,7 +245,7 @@ knitr::include_graphics("img/carbom_txt.png")
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples)
 ```
 
@@ -256,7 +261,7 @@ knitr::include_graphics("img/carbom_txt.png")
 
 ## Excel sheet
 
-```{r, echo=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
 knitr::include_graphics("img/carbom_excel.png")
 ```
 
@@ -271,7 +276,7 @@ knitr::include_graphics("img/carbom_excel.png")
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples)
 ```
 
@@ -283,7 +288,7 @@ knitr::include_graphics("img/carbom_excel.png")
 ## Bad data input under Excel
 <br>
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples) %>% 
   kableExtra::row_spec(c(4:5,7:8) , bold = F, background = "lightyellow")
 ```
@@ -299,18 +304,19 @@ knitr::include_graphics("img/carbom_excel.png")
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples)
 ```
 
 * All missing values have been filled in.
 
-
 ---
+
+layout: false
 # dplyr - Manipulate  tables
 
 
-```{r, echo=FALSE, out.width = '75%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, out.width = '75%', fig.align= "center"}
 knitr::include_graphics("img/dplyr.jpg")
 ```
 
@@ -349,7 +355,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_select)
 ```
 .warning[
@@ -365,7 +371,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_select)
 ```
 
@@ -380,7 +386,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_select)
 ```
 
@@ -394,7 +400,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_select)
 ```
 
@@ -416,7 +422,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples)%>% 
   kableExtra::column_spec(c(1) , background = "lightyellow")
 ```
@@ -432,7 +438,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples)%>% 
   kableExtra::column_spec(c(16) , bold = T, background = "lightyellow")
 ```
@@ -452,7 +458,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_select)%>% 
   kableExtra::column_spec(c(12) , bold = T, background = "lightyellow")
 ```
@@ -468,7 +474,7 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(select(samples, sample_number:time, sample_label))%>% 
   kableExtra::column_spec(c(6) , bold = T, background = "lightyellow")
 
@@ -487,18 +493,12 @@ samples_select <- dplyr::select(samples, transect, `sample number`,
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples) %>% 
   kableExtra::column_spec(c(5) , bold = T, background = "lightyellow")
 ```
 
 * Use the `lubridate` package to manipulate dates
-
-```{r, echo=FALSE}
-# Updating the selected tables for latter
-  samples_select <- samples  %>% 
-    dplyr::select(sample_number:nanoeuks)
-```
 
 ---
 layout: true
@@ -515,7 +515,7 @@ layout: true
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples)%>% 
   kableExtra::column_spec(c(3) , bold = T, background = "lightyellow")
 ```
@@ -533,7 +533,7 @@ layout: true
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples)%>% 
   kableExtra::column_spec(c(3) , bold = T, background = "lightyellow")
 ```
@@ -556,7 +556,7 @@ layout: true
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_mean)%>% 
   kableExtra::column_spec(c(3, 4) , bold = T, background = "lightyellow")
 ```
@@ -574,7 +574,7 @@ layout: true
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_surf)
 ```
 
@@ -587,7 +587,7 @@ layout: true
 
 ---
 
-```{r, echo=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
 knitr::include_graphics("img/sql_inner_join.png")
 ```
 
@@ -626,7 +626,7 @@ For example it can be Bottle #, Station #
 
 --
 
-```{r, echo=FALSE, fig.cap="", out.width = '50%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '50%', fig.align= "center"}
 knitr::include_graphics("img/carbom_excel_sequences.png")
 ```
 
@@ -634,27 +634,37 @@ knitr::include_graphics("img/carbom_excel_sequences.png")
 
 ## Reading table with sequence samples
 
-```{r, tidy=F}
+```{r, tidy=FALSE}
   sequences <- readxl::read_excel("data/CARBOM data.xlsx", 
                            sheet = "Samples_sequencing") 
 ```
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(sequences, 5) %>% 
   kableExtra::column_spec(c(2) , bold = F, background = "lightyellow")
+```
+
+--
+
+## Using only a subset of the columns in the sample table
+
+
+```{r, echo=TRUE, tidy=TRUE}
+  samples_select <- samples  %>% 
+    dplyr::select(sample_number:longitude)
 ```
 
 ---
 * Table sequences
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(sequences, 5) %>% 
   kableExtra::column_spec(c(2) , bold = F, background = "lightyellow")
 ```
 
-* Table samples
+* Table samples_select
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_select, 5)%>% 
   kableExtra::column_spec(c(1) , bold = F, background = "lightyellow")
 ```
@@ -671,7 +681,7 @@ knitr::include_graphics("img/carbom_excel_sequences.png")
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(sequences_join) %>% 
   kableExtra::column_spec(c(2) , bold = F, background = "lightyellow")
 ```
@@ -682,13 +692,13 @@ knitr::include_graphics("img/carbom_excel_sequences.png")
 
 * If the __KEY__ do not have the same name in the two tables it is possible to specify the name of the two columns used for joining.
 
-```{r, tidy=F}
+```{r, tidy=FALSE}
   sequences <- sequences %>% 
     rename(sample_code = sample_number)
 ```
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(sequences)%>% 
   kableExtra::column_spec(c(2) , bold = F, background = "lightyellow")
 ```
@@ -697,14 +707,14 @@ knitr::include_graphics("img/carbom_excel_sequences.png")
 
 ## Joining columns with different names
 
-```{r, tidy=F}
+```{r, tidy=FALSE}
   sequences_join <- left_join(sequences, samples_select, 
                             by= c("sample_code" = "sample_number"))
 ```
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(sequences_join)%>% 
   kableExtra::column_spec(c(2) , bold = F, background = "lightyellow")
 ```
@@ -715,14 +725,14 @@ knitr::include_graphics("img/carbom_excel_sequences.png")
 
 * Let us remove some samples from the sample table
 
-```{r, tidy=F}
+```{r, tidy=FALSE}
   samples_select <- samples_select %>% 
     filter(sample_number != "10")
 ```
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_select)
 ```
 
@@ -730,14 +740,14 @@ knitr::include_graphics("img/carbom_excel_sequences.png")
 
 ## Joining with missing data
 
-```{r, tidy=F}
+```{r, tidy=FALSE}
   sequences_join <- left_join(sequences, samples_select, 
                             by= c("sample_code" = "sample_number"))
 ```
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(sequences_join, 6)
 ```
 
@@ -752,7 +762,7 @@ layout: true
 
 ---
 
-```{r, echo=FALSE, out.width = '70%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, out.width = '70%', fig.align= "center"}
 knitr::include_graphics("img/tidyr.jpg")
 ```
 
@@ -762,7 +772,7 @@ knitr::include_graphics("img/tidyr.jpg")
 
 ## Go from wide to long - gather
 
-```{r, echo=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
 knitr::include_graphics("img/gathering.png")
 
 ```
@@ -771,16 +781,32 @@ knitr::include_graphics("img/gathering.png")
 
 ---
 
+## Aim
+
+We want to have a column with type of phytoplankton and one column with abundance
+
+```{r, tidy=FALSE}
+  samples_select <- samples  %>% 
+    dplyr::select(sample_number:nanoeuks)
+```
+
+
+```{r, echo=FALSE, purl=FALSE}
+  my_kable(samples_select)%>% 
+  kableExtra::column_spec(c(10, 11) , bold = T, background = "lightyellow")
+```
+
+---
+
 ## Go from wide to long - gather
 
-```{r, tidy=F}
+```{r, tidy=FALSE}
   samples_long <- samples_select  %>% 
     tidyr::gather(key="population", value="cell_ml", picoeuks, nanoeuks)
 ```
-
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_long)%>% 
   kableExtra::column_spec(c(10, 11) , bold = T, background = "lightyellow")
 ```
@@ -788,7 +814,7 @@ knitr::include_graphics("img/gathering.png")
 
 ## Go from long to wide - spread
 
-```{r, echo=FALSE, fig.cap="", out.width = '80%', fig.align= "center"}
+```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '80%', fig.align= "center"}
 knitr::include_graphics("img/spreading.png")
 ```
 
@@ -796,14 +822,14 @@ knitr::include_graphics("img/spreading.png")
 
 ## Go from long to wide - spread
 
-```{r, tidy=F}
+```{r, tidy=FALSE}
   samples_wide <- samples_long  %>% 
     tidyr::spread(key="population", value="cell_ml")
 ```
 
 --
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, purl=FALSE}
   my_kable(samples_wide)%>% 
   kableExtra::column_spec(c(10, 11) , bold = T, background = "lightyellow")
 ```
@@ -814,7 +840,8 @@ layout: false
 # Next time: Data visualization (ggplot2)
 
 .pull-left[
-What you will learn :
+
+## What you will learn :
 * Understand the "grammar" of graphics
 * Create exploratory graphics
 * Finalize graphics for publications
@@ -822,7 +849,7 @@ What you will learn :
 
 .pull-right[
 
-```{r echo=FALSE, fig.align="center", fig.cap="", out.width='30%'}
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='30%'}
 knitr::include_graphics('img/R_for_datascience.png')
 ```
 ]
@@ -834,9 +861,10 @@ knitr::include_graphics('img/R_for_datascience.png')
 * Download data files (links on slack)
 
 ]
-Reading list
-* **[Chapter 28 of R for data science](https://r4ds.had.co.nz/graphics-for-communication.html)**
-* [Fundamental of data visualization](https://serialmentor.com/dataviz/)
-* [Data visualization: practical introduction](http://socviz.co/lookatdata.html#what-makes-bad-figures-bad)
+
+## Reading list
+* [Chapter 28 of R for data science](https://r4ds.had.co.nz/graphics-for-communication.html)
+* *[Fundamental of data visualization](https://serialmentor.com/dataviz/)*
+* *[Data visualization: practical introduction](http://socviz.co/lookatdata.html#what-makes-bad-figures-bad)*
 
 
