@@ -31,8 +31,8 @@ output:
 library("knitr")
 
 options(htmltools.dir.version = FALSE)
-  knitr::opts_chunk$set(fig.width=6, 
-                        fig.height=6, 
+  knitr::opts_chunk$set(fig.width=12, 
+                        fig.height=12, 
                         eval=TRUE, 
                         cache=FALSE,
                         echo=TRUE,
@@ -77,7 +77,7 @@ background-size: 45%
 
 .font120[**Daniel Vaulot**]
 
-2019-03-015
+2019-03-15
 
 <br>
 <br>
@@ -98,6 +98,9 @@ knitr::include_graphics("img/logo_SBR.png")
 exclude: true
 
 ## Resources used
+* Simple maps : https://www.r-spatial.org/r/2018/10/25/ggplot2-sf.html
+
+## Other resources
 * Global maps : https://github.com/e-cavan/spatial_mapping_R
 * Ocean maps: https://www.researchgate.net/profile/Robert_Bauer9/publication/315494507_oceanmap_Mapping_oceanographic_data/links/58d2987292851cd76d346f65/oceanmap-Mapping-oceanographic-data.pdf
 
@@ -110,263 +113,217 @@ class: middle
 
 
 .font150[
-* Graph types
-* Grammar of graphics
-* Playing with ggplot2
-* Multiple graphs
-* ggplot2 syntax
-* Your turn
+* Simple features
+* Static maps
+* Plotting your data
+* Interactive maps
 ]
 
 ---
+
 layout: false
+
 # Installation and Resources
 
 .pull-left[
+
 ## Packages
 
+### New
+* sf
+* rnaturalearth
+* rnaturalearthdata
+* leaflet
+
+### Previously used
 * ggplot2
-* cowplot
+* stringr
+* dplyr
 
-## Download
 
-* R-session-04.zip
 
-## Resources
-* [Chapter 28 of R for data science](https://r4ds.had.co.nz/graphics-for-communication.html)
-* [Fundamental of data visualization](https://serialmentor.com/dataviz/)
-* [Data visualization: practical introduction](http://socviz.co/lookatdata.html#what-makes-bad-figures-bad)
 ]
 
 .pull-right[
 
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
-knitr::include_graphics('img/R_for_datascience.png')
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='30%'}
+knitr::include_graphics('img/R-geocomputation.png')
 ```
+
+#### Reading list
+* [Geocomputation with R - Chapter 2](https://geocompr.robinlovelace.net/spatial-class.html)
+* [Geocomputation with R - Chapter 8](https://geocompr.robinlovelace.net/adv-map.html)
+
+#### Other resources
+* [Spatial data science](https://keen-swartz-3146c4.netlify.com/index.html)
+
+
 ]
 
 ---
 
-# Data vizualization
+# What we want to do...
 
-
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='55%'}
-knitr::include_graphics('img/tidy_worflow.png')
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='70%'}
+knitr::include_graphics('img/map-example-swiss.png')
 ```
---
-
-## Graph purposes
-
---
-
-.pull-left[
-* **Analysis graphs**
-    * design to see patterns, trends
-    * aid the process of data description
-    * interpretation]
---
-.pull-right[
-* **Presentation graphs**
-    * design to attract attention
-    * make a point
-    * illustrate a conclusion
-]
-
-.font70[Source: Michael Friendly - http://datavis.ca/courses/RGraphics/]
 
 ---
 layout: true
 
-# Graph types
+# Simple Features (sf)
 
 ---
 
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
+knitr::include_graphics('img/sf.jpg')
+```
+
+* https://github.com/r-spatial/sf
+
+---
+
+* Simple features is an open standard developed and endorsed by the Open Geospatial Consortium (OGC). 
+* Simple Features is a hierarchical data model that represents a wide range of geometry types. 
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='40%'}
+knitr::include_graphics('img/sf-classes.png')
+```
+
+---
+
+* A **point** is simply a coordinate in 2D (can be also 3D or 4D space)
+    * POINT (5 2)
+
+* A **linestring** is a sequence of points with a straight line connecting the points
+    * LINESTRING (1 5, 4 4, 4 1, 2 2, 3 2)
+
+* A **polygon** is a sequence of points that form a closed, non-intersecting ring. 
+    * POLYGON (1 5, 2 2, 4 1, 4 4, 1 5)
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
+knitr::include_graphics('img/sf-classes-01.png')
+```
+
+---
+
+  * MULTIPOINT (5 2, 1 3, 3 4, 3 2)
+  * MULTILINESTRING ((1 5, 4 4, 4 1, 2 2, 3 2), (1 2, 2 4))
+  * MULTIPOLYGON (((1 5, 2 2, 4 1, 4 4, 1 5), (0 2, 1 2, 1 3, 0 3, 0 2)))
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
+knitr::include_graphics('img/sf-classes-02.png')
+```
+
+---
+
+* A **geometry collection** can contain any combination of geometries including (multi)points and linestrings
+    * GEOMETRYCOLLECTION (MULTIPOINT (5 2, 1 3, 3 4, 3 2), LINESTRING (1 5, 4 4, 4 1, 2 2, 3 2))
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='40%'}
+knitr::include_graphics('img/sf-geomcollection.png')
+```
 
 
-.left-column[
-## Jitter
-* Two variables numerical
-]
+---
+
+* Simple feature objects in R are stored in a data frame
+* Geographic data occupying a special column, usually named `geom` or `geometry`. 
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
+knitr::include_graphics('img/sf-examples.png')
+```
+
+Three classes of sf objects
+* **sfg** : geometry
+* **sfc** : column - set of geometry plus coordinates system
+* **sf** : information about each geometry
+
+---
+
+## sf geometry (sfg) class
+
+
+```{r, message=TRUE}
+library(sf)
+```
+
 --
-
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='90%'}
-knitr::include_graphics('img/graph_jitter.png')
+* Creating a point from a vector
+```{r, message=TRUE}
+sf::st_point(c(5, 2))
 ```
-]
+
+--
+* For line, we need to create a **matrix** with rbind
+```{r, message=TRUE}
+multipoint_matrix = rbind(c(5, 2), c(1, 3), c(3, 4), c(3, 2))
+st_multipoint(multipoint_matrix)
+```
 
 ---
 
+## sf geometry (sfg) class
 
-.left-column[
-## Bubble
-* Two variables numerical
-* **Add another variable numerical**
-]
-
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='90%'}
-knitr::include_graphics('img/graph_bubble.png')
+* For multiline, we need to create a **list of matrices**
+```{r, message=TRUE}
+multilinestring_list = list(rbind(c(1, 5), c(4, 4), c(4, 1), c(2, 2), c(3, 2)), 
+                            rbind(c(1, 2), c(2, 4)))
+st_multilinestring((multilinestring_list))
 ```
-]
 
----
-.left-column[
-## Animate
-
-* Two variables numerical
-* One variable numerical
-* One variable categorical
-* **Animate another variable**
-]
-
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
-knitr::include_graphics('img/graph_animate.gif')
+--
+* Idem for geometry collection
+```{r, message=TRUE}
+geometrycollection_list = list(sf::st_multipoint(multipoint_matrix),
+                              sf::st_multilinestring(multilinestring_list))
+st_geometrycollection(geometrycollection_list)
 ```
-]
-
----
-## Times series
-
-.left-column[
-* Line graph
-]
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='90%'}
-knitr::include_graphics('img/graph_time_series.png')
-```
-]
-
----
-## Bargraphs
-
-.left-column[
-* One variable categorical
-* One variable numerical
-]
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='90%'}
-knitr::include_graphics('img/graph_bars2.png')
-```
-]
-
----
-## Bargraphs
-
-.left-column[
-* Rotate
-]
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='90%'}
-knitr::include_graphics('img/graph_bars1.png')
-```
-]
-
----
-## Bargraphs
-
-.left-column[
-* Two variable categorical
-* One variable numerical
-]
-
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='90%'}
-knitr::include_graphics('img/graph_bars3.png')
-```
-]
-
----
-## Boxplots
-
-.left-column[
-* One variable categorical
-* One variable numerical but with many values
-]
-
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='70%'}
-knitr::include_graphics('img/graph_box.png')
-```
-]
-
----
-## Treemaps
-
-.left-column[
-* One variable categorical
-* One variable numerical
-* Much better than pie charts
-]
-
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
-knitr::include_graphics('img/graph_treemap.png')
-```
-]
 
 ---
 
-## 3D
+## sf column (sfc) class
 
-.left-column[
-* Three variable numerical
-* Avoid unless it is a simple shape
-]
+List of sfg obkects that also contains also information about the coordinate system
 
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='70%'}
-knitr::include_graphics('img/graph_3d.png')
+```{r, message=TRUE}
+point1 = st_point(c(5, 2))
+point2 = st_point(c(1, 3))
+points_sfc = st_sfc(point1, point2)
+points_sfc
 ```
-]
 
 ---
 
-## Contours
+## sf column (sfc) class
 
-.left-column[
-* Three variable numerical
-* Better than 3D
-]
+Now add Coordinate Reference System (crs)
 
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
-knitr::include_graphics('img/graph_contour.png')
+```{r, message=TRUE}
+st_sfc(point1, point2, crs = 4326)
 ```
-]
 
 ---
-.left-column[
-## Many...
-]
 
-.right-column[
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='70%'}
-knitr::include_graphics('img/graph_gallery.png')
+## sf class
+
+Add some information about the geometry.
+
+```{r, message=TRUE}
+lnd_point = st_point(c(0.1, 51.5))                 # sfg object
+lnd_geom = st_sfc(lnd_point, crs = 4326)           # sfc object
+lnd_attrib = data.frame(                           # data.frame object
+  name = "London",
+  temperature = 25,
+  date = as.Date("2017-06-21")
+  )
+st_sf(lnd_attrib, geometry = lnd_geom)
 ```
-]
-
-* Choose as a function of what you want to analyze or the story you want to tell
-* https://www.r-graph-gallery.com/all-graphs/
-
-
----
-layout: false
-
-# ggplot2
-
-
-```{r, echo=FALSE, out.width = '60%', fig.align= "center", purl=FALSE}
-knitr::include_graphics("img/ggplot2.jpg")
-```
-
-@allison_horst
-
 
 ---
 layout: true
-# Initialize
+
+# Static maps
 
 ---
 
@@ -376,349 +333,358 @@ layout: true
 ```{r libraries, message= FALSE, warning=FALSE}
 
 library("readxl") # Import the data from Excel file
-
 library("dplyr")  # filter and reformat data frames
 
 library("ggplot2") # graphics
+library("sf") # simple features
+library("rnaturalearth") 
+library("rnaturalearthdata")
+
 ```
 
+---
+
+## Read the world map data
+
+* `scale` can be 'small', 'medium', 'large'
+* `returnclass` can be 'sp' or 'sf' - sf (simple features) is an evolution of sp
+
+
+```{r}
+world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+```
+
+---
+
+The world data are returned as a sf (simple feature) dataframe which contains
+* normal fields
+* one field called geometry which contains points, lines or polygon coordinate information
+
+```{r}
+colnames(world)
+```
+
+---
+
+* The field `name` contains the name of the countries, `continent` the continent, etc...
+* The field `geometry` contains the country outline
+```{r, purl=FALSE, echo=FALSE}
+my_kable(dplyr::select(world, name, continent, geometry), nrow=1)
+
+```
+--
+
+
+```{r}
+world$geometry[1]
+```
+
+---
+
+## A simple world map
+
+.left-code[
+* Use `geom_sf`
+```{r map01, eval=FALSE, purl=FALSE, warning=FALSE}
+# Set the black and white theme
+theme_set(theme_bw())
+
+ggplot(data = world) +
+    geom_sf() 
+```
+]
+
+.right-plot[
+```{r, ref.label="map01", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '80%', fig.align= "center"}
+
+```
+]
+
+---
+
+## A simple world map
+
+.left-code[
+* Use `coord_sf(expand = FALSE)`to have the axis labels 
+```{r map01b, eval=FALSE, purl=FALSE, warning=FALSE}
+
+ggplot(data = world) +
+    geom_sf() +
+    coord_sf(expand = FALSE)
+```
+]
+
+.right-plot[
+```{r, ref.label="map01b", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '80%', fig.align= "center"}
+
+```
+]
+
+---
+
+## Color continents
+
+.left-code[
+* Add `color="white", fill="blue"`
+```{r map02, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf(color="white", fill="blue")+
+    coord_sf(expand = FALSE) 
+```
+]
+
+.right-plot[
+```{r, ref.label="map02", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '80%', fig.align= "center"}
+
+```
+]
+
+---
+## Plot population
+
+.left-code[
+* Use value of column `pop_est`
+```{r map03, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf(aes(fill= pop_est))+
+    coord_sf(expand = FALSE)
+```
+]
+
+.right-plot[
+```{r, ref.label="map03", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '80%', fig.align= "center"}
+
+```
+]
+
+---
+## Plot population
+
+.left-code[
+* Change color scale
+* Transform the data
+```{r map04, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf(aes(fill= pop_est)) +
+    coord_sf(expand = FALSE) +
+    scale_fill_viridis_c(trans = "log10")
+```
+]
+
+.right-plot[
+```{r, ref.label="map04", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '80%', fig.align= "center"}
+
+```
+]
+
+---
+## Modify projections
+.left-code[
+* Specify coordinate system: https://geocompr.robinlovelace.net/spatial-class.html#crs-intro
+
+    * Lambert projection
+    * From the North Pole
+    * "+proj=laea +lat_0=90 +lon_0=0 "
+```{r map05, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf() +
+    coord_sf(expand = FALSE,
+             crs = "+proj=laea +lat_0=90 +lon_0=0 ")
+```
+]
+
+.right-plot[
+```{r, ref.label="map05", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+
+```
+]
+
+---
+## Zoom
+.left-code[
+* Centered on Singapore
+```{r map06, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf() +
+    coord_sf(xlim=c(90,110), 
+             ylim=c(-10,10))
+```
+.warning[Resolution is not optimal]
+]
+
+.right-plot[
+```{r, ref.label="map06", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+
+```
+]
+
+---
+## Add country names
+
+* Must first define coordinates centroid of each country (X and Y)
+
+```{r, warning=FALSE}
+world_centroids<- st_coordinates(st_centroid(world$geometry))
+```
+--
+* Bind the 2 tables
+```{r, warning=FALSE}
+world_centroids <- cbind(world, world_centroids)
+```
+
+```{r, warning=FALSE, echo=FALSE}
+my_kable(select(world_centroids, name, X, Y, -geometry), 1)
+
+```
+
+---
+## Add country names
+
+.left-code[
+* Use `geom_text()`
+
+```{r map07, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world_centroids) +
+    geom_sf() +
+    coord_sf(xlim=c(70,130), 
+             ylim=c(-20,20)) +
+    geom_text(aes(x = X, y=Y, label=name), 
+              size=5) +
+    xlab("Longitude") +
+    ylab("Latitude")
+```
+]
+
+.right-plot[
+```{r, ref.label="map07", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '80%', fig.align= "center"}
+
+```
+]
+
+
+---
+layout: true
+
+# Plot data
 
 ---
 
 ## Read the data
 
 ```{r}
-samples <- readxl::read_excel("data/CARBOM data.xlsx", 
-                         sheet = "Samples_boat") %>% 
-           tidyr::fill(station)
+bolido <- readxl::read_excel("data/bolido.xlsx")
 ```
 
 
 ```{r, echo=FALSE, purl=FALSE}
-  my_kable(samples)
+  my_kable(bolido)
 ```
 
 ---
-layout: true
-# ggplot2
 
----
+## A bit of biology... Bolidophyceae and Parmales
 
-## A simple plot
-
-.left-code[
-* Choose the data set
-* Choose the geometric representation
-* Choose the __aesthetics__ : x,y, color, shape etc...
-
-```{r plot01, eval=FALSE, purl=FALSE}
-ggplot(data=samples) + 
-geom_point(mapping = aes(x=phosphates, 
-                         y=nitrates))
+.pull-left[
+### _Triparma_
+```{r, out.width="70%", fig.align="center", echo=FALSE, purl=FALSE}
+knitr::include_graphics("img/2011-Ichinomya-Triparma.png")
 ```
-
-* All functions are from __ggplot2__ package unless specified
-]
---
-.right-plot[
-```{r, ref.label="plot01", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
+* Covered with silica
 ]
 
----
-## The grammar of graphics
-
-
-```{r, echo=FALSE, purl=FALSE, out.width = '50%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_grammar1.png")
+.pull-right[
+### _Bolidomonas_
+```{r, out.width="50%", fig.align="center", echo=FALSE, purl=FALSE}
+knitr::include_graphics("img/1999-Guillou-Bolidomonas_drawing.png")
 ```
+* 1.5 µm
+]
 
-Every graph can be described as a combination of independent building blocks:
-* **data**: a data frame: quantitative, categorical; local or data base query
-* **aes**thetic mapping of variables into visual properties: size, color, x, y
-* **geom**etric objects (“geom”): points, lines, areas, arrows, …
-* **coord**inate system (“coord”): Cartesian, log, polar, map
+
+
+.footnote[_Guillou, L., Chrétiennot-Dinet, M.-J., Medlin, L.K., Claustre, H., Loiseaux-de Goër, S. & Vaulot, D. 1999. J. Phycol. 35:368–81.  
+Ichinomiya, M., Yoshikawa, S., Kamiya, M., Ohki, K., Takaichi, S. & Kuwata, A. 2011. J. Phycol. 47:144–51.  
+Ichinomiya, M., dos Santos, A.L., Gourvil, P., Yoshikawa, S., Kamiya, M., Ohki, K., Audic, S. et al. 2016. ISME J. 10:2419–34._
+]
 
 ---
+
+## Plot the stations where Bolidophyceae found
 
 .left-code[
-Syntax
-```{r plot02, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(data=samples) + 
-  geom_point(mapping = aes(x=phosphates, 
-                           y=nitrates))
+* Filter by to remove stations where Bolido are not present
+```{r map08, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf()+
+    coord_sf(expand = FALSE) +
+    geom_point(data=filter(bolido, 
+                           bolido_pct >0), 
+               aes(x=longitude, 
+                   y=latitude), 
+               size=3)
 ```
 ]
 
 .right-plot[
-```{r, ref.label="plot02", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-
-.left-code[
-Alternatively
-```{r plot03, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(data=samples, 
-        mapping = aes(x=phosphates, 
-                      y=nitrates)) + 
-  geom_point()
-```
-* If different geometries have different mapping the mapping must be called **inside** the geom function
-]
-
-.right-plot[
-```{r, ref.label="plot03", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-
-.left-code[
-Alternatively
-```{r plot04, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples, 
-        aes(x=phosphates, 
-            y=nitrates)) + 
-  geom_point()
-```
-]
-
-.right-plot[
-```{r, ref.label="plot04", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+```{r, ref.label="map08", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '90%', fig.align= "center"}
 
 ```
 ]
 
 ---
 
-## Make dot size bigger
+## Percentage of Bolidophyceae
 
 .left-code[
-```{r plot05, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates)) 
+* Filter by to remove stations where Bolido are not present
+```{r map09, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf()+
+    coord_sf(expand = FALSE) +
+    geom_point(data=filter(bolido, 
+                           bolido_pct >0), 
+               aes(x=longitude, 
+                   y=latitude, 
+                   size=bolido_pct),
+               color="blue")
 ```
 ]
 
 .right-plot[
-```{r, ref.label="plot05", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+```{r, ref.label="map09", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '90%', fig.align= "center"}
 
 ```
 ]
 
 ---
 
-## Make dot size bigger
+## Dominant species of _Triparma_
 
 .left-code[
-```{r plot06, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates)) + 
-  geom_point(size=5)
+* Color with species
+* Put species legend at bottom on 2 rows
+
+```{r map10, eval=FALSE, purl=FALSE, warning=FALSE}
+ggplot(data = world) +
+    geom_sf()+
+    coord_sf(expand = FALSE) +
+    geom_point(data=filter(bolido, 
+                           bolido_pct >0,
+                           stringr::str_detect(species_dominant, "Triparma")), 
+               aes(x=longitude, 
+                   y=latitude,
+                   color=species_dominant),
+               size = 4) +
+   scale_colour_viridis_d() +
+   theme(legend.position="bottom") +
+   guides(color=guide_legend(nrow=2,
+                             byrow=TRUE))
 ```
-* Add: __size=5__ outside of the aesthetics function
+
 ]
 
 .right-plot[
-```{r, ref.label="plot06", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
----
-
-
-## Color according to depth level (discrete)
-
-.left-code[
-```{r plot07, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates,
-            color=level)) + 
-  geom_point(size=5)
-```
-* The mapping aesthetics must be an argument of the aes function
-* geom_point(__color=level__, size=5) will generate an error...
-]
-
-.right-plot[
-```{r, ref.label="plot07", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-## Color according to depth  (continuous)
-
-.left-code[
-```{r plot08, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates,
-            color=depth)) + 
-  geom_point(size=5)
-```
-* Add: __color=depth__ 
-]
-
-.right-plot[
-```{r, ref.label="plot08", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-
-## Symbol according to transect (continuous)
-
-.left-code[
-```{r plot09, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates,
-            color=depth,
-            shape=transect)) + 
-  geom_point(size=5)
-```
-* Add: __shape=transect__ 
-]
-
-.right-plot[
-```{r, ref.label="plot09", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
----
-
-## Symbol according to transect (continuous)
-
-.left-code[
-```{r plot10, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates,
-            color=depth,
-            shape=as.character(transect))) + 
-  geom_point(size=5)
-```
-* Add: __shape=as.character(transect)__ 
-]
-
-.right-plot[
-```{r, ref.label="plot10", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-
-## Panels depending on one variable
-
-.left-code[
-```{r plot11, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates)) +
-  geom_point() +
-  facet_wrap(~ level) 
-```
-]
-
-.right-plot[
-```{r, ref.label="plot11", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-## Adding a regression line
-
-.left-code[
-```{r plot12a, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates, 
-            color=level)) +
-  geom_point(size=5) +
-  geom_smooth(mapping = aes(x=phosphates, 
-                            y=nitrates), 
-              method="lm")
-```
-* Add: __geom_smooth()__
-* You can choose the type of smoothing "lm" is for linear model
-]
-
-.right-plot[
-```{r, ref.label="plot12a", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-## Adding a regression line
-
-.left-code[
-```{r plot12b, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples,
-        aes(x=phosphates, 
-            y=nitrates)) +
-  geom_point(aes(color=level), 
-             size=5) +
-  geom_smooth(mapping = aes(x=phosphates, 
-                            y=nitrates), 
-              method="lm")
-```
-* If the mapping is in the ggplot function is for all the geom....
-]
-
-.right-plot[
-```{r, ref.label="plot12b", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-
-## Finalizing the graph
-
-
-.left-code[
-```{r plot13, eval=FALSE, purl=FALSE, warning=FALSE}
- ggplot(samples) + 
-  geom_point(mapping = aes(x=phosphates, 
-                           y=nitrates,
-                           color=level), 
-             size=5) +
-  geom_smooth(mapping = aes(x=phosphates, 
-                            y=nitrates), 
-              method="lm") +
-  xlab("Phosphates") + 
-  ylab("Nitrates") + 
-  ggtitle("CARBOM cruise")
-```
-* Add: __geom_smooth()__
-* You can choose the type of smoothing "lm" is for linear model
-]
-
-.right-plot[
-```{r, ref.label="plot13", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+```{r, ref.label="map10", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '90%', fig.align= "center"}
 
 ```
 ]
@@ -727,409 +693,277 @@ Alternatively
 
 layout: true
 
-# Putting several graphs together
+# Interactive maps
 
 ---
 
-## First graph 
+## Leaflet
+
+.pull-left[
+* Javascript: https://leafletjs.com/
+* Leaflet for R : https://rstudio.github.io/leaflet/
+* All functions from `leaflet` package
+
+```{r}
+library("leaflet") 
+```
+]
+
+.pull-right[
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='80%'}
+knitr::include_graphics('img/leaflet.png')
+```
+]
+
+
+
+
+---
+
+## Create an empty map
 
 .left-code[
-```{r plot14, eval=FALSE, purl=FALSE, warning=FALSE}
- g1 <- ggplot(samples) + 
-  geom_point(mapping = aes(x=phosphates, 
-                           y=nitrates,color=
-                             level), size=5) +
-  geom_smooth(mapping = aes(x=phosphates, 
-                            y=nitrates), 
-              method="lm") +
-  xlab("Phosphates") + 
-  ylab("Nitrates")
 
- g1
+```{r map11, eval=FALSE, purl=FALSE, warning=FALSE}
+leaflet(width = 750, height = 500)
 ```
 
 ]
 
 .right-plot[
-```{r, ref.label="plot14", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+```{r, ref.label="map11", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
 
 ```
 ]
 
-
-
 ---
 
-## Second graph
+## Add background (tiles)
+
 
 .left-code[
-```{r plot15, eval=FALSE, purl=FALSE, warning=FALSE}
- g2<- ggplot(samples) + 
-  geom_point(mapping = aes(x=nanoeuks, 
-                           y=picoeuks,
-                           color=level), 
-             size=5) +
-  geom_smooth(mapping = aes(nanoeuks, 
-                            y=picoeuks), 
-              method="lm") +
-  xlab("Pico-eukaryotes") + 
-  ylab("Nano-eukaryotes") 
-
- g2
+ 
+```{r map12, eval=FALSE, purl=FALSE, warning=FALSE}
+leaflet(width = 750, height = 500)%>%
+  addTiles()
 ```
 
 ]
 
 .right-plot[
-```{r, ref.label="plot15", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+```{r, ref.label="map12", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
 
 ```
 ]
 
 ---
-## Putting together
+
+## Set limits and zoom
 
 
 .left-code[
-```{r plot16, eval=FALSE, purl=FALSE, warning=FALSE}
-cowplot::plot_grid(g1, g2, 
-                   nrow = 2, 
-                   labels = c("A", "B") ) 
+
+```{r map13, eval=FALSE, purl=FALSE, warning=FALSE}
+leaflet(width = 750, height = 500)%>%
+  addTiles() %>%
+  setView(lng=0, lat=0, zoom=2)
 ```
-* See also package : `gridExtra`
+
 ]
 
 .right-plot[
-```{r, ref.label="plot16", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+```{r, ref.label="map13", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
 
 ```
 ]
 
 ---
+
+## Adding data points
+
+
+.left-code[
+ 
+```{r map14, eval=FALSE, purl=FALSE, warning=FALSE}
+leaflet(width = 750, height = 500)%>%
+  addTiles() %>%
+  setView(lng=0, lat=0, zoom=2) %>% 
+  addCircleMarkers(data = bolido, 
+                   lat = ~ latitude, 
+                   lng = ~ longitude,
+               radius = 5,
+         label = ~ station_id,
+         labelOptions = labelOptions(textsize = "10px", 
+                                     noHide = T),
+         clusterOptions = markerClusterOptions())
+```
+
+]
+
+.right-plot[
+```{r, ref.label="map14", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
+
+```
+]
+
+
+---
+
+## Adding background
+
+
+.left-code[
+
+```{r map15, eval=FALSE, purl=FALSE, warning=FALSE}
+leaflet(width = 750, height = 500)%>%
+  addTiles() %>%
+  setView(lng=0, lat=0, zoom=2) %>% 
+  addCircleMarkers(data = bolido, 
+                   lat = ~ latitude, 
+                   lng = ~ longitude,
+               radius = 5,
+         label = ~ station_id,
+         labelOptions = labelOptions(textsize = "10px", noHide = T),
+         clusterOptions = markerClusterOptions()) %>% 
+  addProviderTiles(providers$Esri.OceanBasemap)
+```
+* https://leaflet-extras.github.io/leaflet-providers/preview/
+
+]
+
+.right-plot[
+```{r, ref.label="map15", echo=FALSE, purl=TRUE, warning=FALSE, out.width = '80%', fig.align= "center"}
+
+```
+]
+
+---
+
 layout: true
 
-# ggplot2 syntax
+# Other packages
 
 ---
-## Anatomy of a plot
+## Thematic maps (tmap)
 
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '70%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_anatomy.png")
+* https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
+knitr::include_graphics('img/thematic_maps_01.png')
 ```
 
 ---
 
-## Geometries
+## Raster
 
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_geom.png")
+* https://cran.r-project.org/web/packages/raster/vignettes/Raster.pdf
+
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='60%'}
+knitr::include_graphics('img/raster_sst.png')
 ```
 
----
-## Continuous x and y
-
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '40%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_continuous.png")
-```
 
 ---
 
-## Plotting error
+layout: true
+background-image: url(img/course-logo.png)
+background-position: right top 30px 
+background-size: 45%
 
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_error.png")
-```
-
----
-
-## Discrete x - Continuous y
-
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_discrete.png")
-```
+# Next time: Your choice ?
 
 ---
 
-## Continuous x
+.font150[
 
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '50%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_one_var.png")
-```
+* Strings and date manipulation
+* Text mining
+* Web mining
+* Create your own package
+* Intro to databases
 
----
-
-## 3D
-
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '100%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_3d.png")
-```
+]
 
 ---
-
-## Modifying axis and scales
-
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '80%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_scales.png")
-```
-
----
-
-## Palettes
-
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '60%', fig.align= "center"}
-knitr::include_graphics("img/color_palettes.png")
-```
-
-Package tmaptools : https://github.com/mtennekes/tmaptools
-* Function : `palette_explorer()`
-
-Package paletteer : https://github.com/EmilHvitfeldt/paletteer
-* More than 1000 palettes
-
----
-
-## Themes
-
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '50%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_themes.png")
-```
-
----
-
-## Extensions
-
-http://www.ggplot2-exts.org/gallery/
-
-```{r, echo=FALSE, purl=FALSE, fig.cap="", out.width = '50%', fig.align= "center"}
-knitr::include_graphics("img/ggplot2_extensions.png")
-```
-
----
-
 layout: true
 
 # Your turn
 
 ---
 
-```{r, out.width = '50%', purl=FALSE, echo=FALSE, fig.align="center", warning=FALSE}
+.left-code[
 
- ggplot(filter(samples, transect==2 & !is.na(depth)), aes(y=depth, x=picoeuks)) + 
-  geom_point(size=3)  +
-  geom_path() +
-  scale_y_reverse() +
-  facet_wrap(~ station) +
-  theme_bw() +
-  ggtitle("Percentage of pico-eukaryotes per station on transect 2") +
-  xlab("Pico-eukaryote per mL") +
-  ylab("Depth (m)") +
-  scale_x_log10(limits= c(100,10000)) +
-  annotation_logticks(sides="b")
+* Use four shapes files
+    * world
+    * world_centroids
+    * bathymetry 0 m 
+    * bathymetry 200 m
+    
+* https://www.naturalearthdata.com/downloads/10m-physical-vectors/10m-bathymetry/
+* Files can be read with  `sf::read_sf`
+
+* Small trick: must use the Windows file convention (\ and not /) and then must escape it !!!
+
+```{r, purl=FALSE, eval=FALSE}
+bathy_0 <- read_sf("data\\ne_10m_bathymetry_L_0.shp")
+bathy_200 <- read_sf("data\\ne_10m_bathymetry_K_200.shp")
+```
+
+]
+.right-plot[
+
+```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='80%'}
+
+# Very tricky must use the Windows file name !!!
+bathy_0 <- read_sf("data\\ne_10m_bathymetry_L_0.shp")
+bathy_200 <- read_sf("data\\ne_10m_bathymetry_K_200.shp")
+
+theme_set(theme_bw())
+
+ggplot() +
+    geom_sf(data = world, fill="grey90", color="grey90") +
+    geom_sf(data = bathy_0, fill="deepskyblue", color="deepskyblue") +
+    geom_sf(data=bathy_200, fill="white", color="white")+
+    coord_sf(xlim=c(-20,40), 
+             ylim=c(30,70)) +
+    geom_point(data=filter(bolido, 
+                           bolido_pct >0), 
+               aes(x=longitude, 
+                   y=latitude, 
+                   size=bolido_pct),
+               color="red")+
+    geom_text(data = world_centroids, aes(x = X, y=Y, label=name), 
+              size=3) +
+    xlab("Longitude") + ylab("Latitude") + labs(size = "Bolido %")
   
 ```
-
----
-
-.left-code[
-```{r plot17, eval=FALSE, purl=FALSE, warning=FALSE}
-ggplot(filter(samples, 
-               transect==2 & !is.na(depth)), 
-        aes(y=depth, x=picoeuks))  + 
-geom_point(size=3)
-```
-
-]
-
-.right-plot[
-```{r, ref.label="plot17", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
 ]
 
 ---
 
-.left-code[
-```{r plot18, eval=FALSE, purl=FALSE, warning=FALSE}
-ggplot(filter(samples, 
-             transect==2 & !is.na(depth)), 
-      aes(y=depth, x=picoeuks))  + 
-geom_point(size=3) +
-facet_wrap(~ station) 
+```{r eval=FALSE, purl=FALSE'}
 
-```
+# Very tricky must use the Windows file convention (backslash and not slash) !!!
+bathy_0 <- read_sf("data\\ne_10m_bathymetry_L_0.shp")
+bathy_200 <- read_sf("data\\ne_10m_bathymetry_K_200.shp")
 
-]
+theme_set(theme_bw())
 
-.right-plot[
-```{r, ref.label="plot18", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
----
-
-.left-code[
-```{r plot19, eval=FALSE, purl=FALSE, warning=FALSE}
-ggplot(filter(samples, 
-             transect==2 & !is.na(depth)), 
-      aes(y=depth, x=picoeuks))  + 
-geom_point(size=3) +
-facet_wrap(~ station) +
-geom_path() 
+ggplot() +
+    geom_sf(data = world, fill="grey90", color="grey90") +
+    geom_sf(data = bathy_0, fill="deepskyblue", color="deepskyblue") +
+    geom_sf(data=bathy_200, fill="white", color="white")+
+    coord_sf(xlim=c(-20,40), 
+             ylim=c(30,70)) +
+    geom_point(data=filter(bolido, 
+                           bolido_pct >0), 
+               aes(x=longitude, 
+                   y=latitude, 
+                   size=bolido_pct),
+               color="red")+
+    geom_text(data = world_centroids, aes(x = X, y=Y, label=name), 
+              size=3) +
+    xlab("Longitude") + ylab("Latitude") + labs(size = "Bolido %")
   
 ```
-* Do not use `geom_line`
-]
-
-.right-plot[
-```{r, ref.label="plot19", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
----
-
-.left-code[
-```{r plot20, eval=FALSE, purl=FALSE, warning=FALSE}
-ggplot(filter(samples, 
-             transect==2 & !is.na(depth)), 
-      aes(y=depth, x=picoeuks))  + 
-geom_point(size=3) +
-facet_wrap(~ station) +
-geom_path() +
-scale_y_reverse()
-  
-```
-
-]
-
-.right-plot[
-```{r, ref.label="plot20", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
----
-
-.left-code[
-```{r plot22, eval=FALSE, purl=FALSE, warning=FALSE}
-ggplot(filter(samples, 
-             transect==2 & !is.na(depth)), 
-      aes(y=depth, x=picoeuks))  + 
-geom_point(size=3) +
-facet_wrap(~ station) +
-geom_path() +
-scale_y_reverse() +
-theme_bw()
-  
-```
-
-]
-
-.right-plot[
-```{r, ref.label="plot22", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
----
-
-.left-code[
-```{r plot23, eval=FALSE, purl=FALSE, warning=FALSE}
-ggplot(filter(samples, 
-             transect==2 & !is.na(depth)), 
-      aes(y=depth, x=picoeuks))  + 
-geom_point(size=3) +
-facet_wrap(~ station) +
-geom_path() +
-scale_y_reverse() +
-theme_bw() +
-ggtitle("Percentage of pico-eukaryotes per station on transect 2") +
-xlab("Pico-eukaryote per mL") +
-ylab("Depth (m)") 
-  
-```
-
-]
-
-.right-plot[
-```{r, ref.label="plot23", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
----
-
-.left-code[
-```{r plot24, eval=FALSE, purl=FALSE, warning=FALSE}
-ggplot(filter(samples, 
-             transect==2 & !is.na(depth)), 
-      aes(y=depth, x=picoeuks))  + 
-geom_point(size=3) +
-facet_wrap(~ station) +
-geom_path() +
-scale_y_reverse() +
-theme_bw() +
-ggtitle("Percentage of pico-eukaryotes per station on transect 2") +
-xlab("Pico-eukaryote per mL") +
-ylab("Depth (m)") +
-scale_x_log10(limits= c(100,10000)) +
-annotation_logticks(sides="b")
-  
-```
-
-]
-
-.right-plot[
-```{r, ref.label="plot24", echo=FALSE, purl=TRUE, error=TRUE, warning=FALSE, out.width = '70%', fig.align= "center"}
-
-```
-]
-
-
----
-
-layout: false
-
-# Next time: Create maps
-
-.pull-left[
-
-## What you will learn :
-* Create simple maps
-* Create interactive maps
-* Create thematic maps
-
-## Install
-* rworldmap
-* leaflet
-* sf
-* raster
-* spData
-* tmap
-* ggplot2
-
-
-
-]
-
-.pull-right[
-
-## Reading list
-* [Geocomputation with R](https://geocompr.robinlovelace.net/)
-
-```{r echo=FALSE, purl=FALSE, fig.align="center", fig.cap="", out.width='40%'}
-knitr::include_graphics('img/R-geocomputation.png')
-```
-
-]
-
-
-
-
-
-
-
-
-
-

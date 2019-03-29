@@ -86,6 +86,7 @@ a, a > code {
   clear: both;
 }
 
+
 /* custom.css */
 .left-code {
   color: #777;
@@ -97,4 +98,11 @@ a, a > code {
   width: 60%;
   float: right;
   padding-left: 1%;
+}
+
+.footnote {
+  position: absolute;
+  bottom: 1.5em;
+  padding-right: 4em;
+  font-size: 0.7em;
 }
