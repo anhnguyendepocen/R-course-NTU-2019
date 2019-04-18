@@ -942,7 +942,7 @@ ggplot() +
 
 ---
 
-```{r eval=FALSE, purl=FALSE'}
+```{r eval=FALSE, purl=FALSE}
 
 # Very tricky must use the Windows file convention (backslash and not slash) !!!
 bathy_0 <- read_sf("data\\ne_10m_bathymetry_L_0.shp")
